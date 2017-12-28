@@ -12,8 +12,8 @@ public final class Top10WordAnalyzer {
         JavaSparkContext sc = new JavaSparkContext(new SparkConf().setAppName("Top10"));
 
         sc.textFile(args[0]).map(line -> line.replaceAll("[^A-Za-z]+", " "))
-                .flatMap(line -> Arrays.asList(line.split("\\s+")).iterator())
                 .map(String::toLowerCase)
+                .flatMap(line -> Arrays.asList(line.split("\\s+")).iterator())
                 .mapToPair(word -> new Tuple2<>(word, 1L))
                 .reduceByKey((x, y) ->  x + y)
                 .collect()
